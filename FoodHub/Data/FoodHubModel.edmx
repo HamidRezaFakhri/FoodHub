@@ -1,0 +1,559 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FoodHubModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Food">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FoodCategoryId" Type="tinyint" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="Image" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsMeal" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FoodDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FoodId" Type="bigint" Nullable="false" />
+          <Property Name="LanguageId" Type="tinyint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="FoodSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FoodId" Type="bigint" Nullable="false" />
+          <Property Name="AvailableDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AvailableCount" Type="int" Nullable="false" />
+          <Property Name="BreakFast" Type="bit" Nullable="false" />
+          <Property Name="Lunch" Type="bit" Nullable="false" />
+          <Property Name="Dinner" Type="bit" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Abbreviation" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="Flag" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reserve">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FoodScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="ReserveUserId" Type="bigint" Nullable="false" />
+          <Property Name="ReserveDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ReserveCount" Type="int" Nullable="false" />
+          <Property Name="BreakFast" Type="bit" Nullable="false" />
+          <Property Name="Lunch" Type="bit" Nullable="false" />
+          <Property Name="Dinner" Type="bit" Nullable="false" />
+          <Property Name="IsSold" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleId" Type="tinyint" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ZipCode" Type="char" MaxLength="6" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Mobile" Type="nchar" MaxLength="14" Nullable="false" />
+          <Property Name="Image" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Telegram" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AuthAsCollege" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Image" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Food_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Food" Type="Self.Food" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Food">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FoodDetail_Food">
+          <End Role="Food" Type="Self.Food" Multiplicity="1" />
+          <End Role="FoodDetail" Type="Self.FoodDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FoodDetail">
+              <PropertyRef Name="FoodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FoodDetail_Language">
+          <End Role="Language" Type="Self.Language" Multiplicity="1" />
+          <End Role="FoodDetail" Type="Self.FoodDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Language">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FoodDetail">
+              <PropertyRef Name="LanguageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FoodSchedule_Food">
+          <End Role="Food" Type="Self.Food" Multiplicity="1" />
+          <End Role="FoodSchedule" Type="Self.FoodSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FoodSchedule">
+              <PropertyRef Name="FoodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reserve_FoodSchedule">
+          <End Role="FoodSchedule" Type="Self.FoodSchedule" Multiplicity="1" />
+          <End Role="Reserve" Type="Self.Reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FoodSchedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reserve">
+              <PropertyRef Name="FoodScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reserve_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Reserve" Type="Self.Reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reserve">
+              <PropertyRef Name="ReserveUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDocument_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserDocument" Type="Self.UserDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserDocument">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FoodHubModelStoreContainer">
+          <EntitySet Name="Food" EntityType="Self.Food" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FoodDetail" EntityType="Self.FoodDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FoodSchedule" EntityType="Self.FoodSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Language" EntityType="Self.Language" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reserve" EntityType="Self.Reserve" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserDocument" EntityType="Self.UserDocument" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Food_User" Association="Self.FK_Food_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Food" EntitySet="Food" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FoodDetail_Food" Association="Self.FK_FoodDetail_Food">
+            <End Role="Food" EntitySet="Food" />
+            <End Role="FoodDetail" EntitySet="FoodDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FoodDetail_Language" Association="Self.FK_FoodDetail_Language">
+            <End Role="Language" EntitySet="Language" />
+            <End Role="FoodDetail" EntitySet="FoodDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FoodSchedule_Food" Association="Self.FK_FoodSchedule_Food">
+            <End Role="Food" EntitySet="Food" />
+            <End Role="FoodSchedule" EntitySet="FoodSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_FoodSchedule" Association="Self.FK_Reserve_FoodSchedule">
+            <End Role="FoodSchedule" EntitySet="FoodSchedule" />
+            <End Role="Reserve" EntitySet="Reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_User" Association="Self.FK_Reserve_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Reserve" EntitySet="Reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserDocument_User" Association="Self.FK_UserDocument_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserDocument" EntitySet="UserDocument" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FoodHubModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Food">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsMeal" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Food_User" FromRole="Food" ToRole="User" />
+          <NavigationProperty Name="FoodSchedules" Relationship="Self.FK_FoodSchedule_Food" FromRole="Food" ToRole="FoodSchedule" />
+          <NavigationProperty Name="FoodDetails" Relationship="FoodHubModel.FK_FoodDetail_Food" FromRole="Food" ToRole="FoodDetail" />
+          <Property Name="FoodCategoryId" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FoodSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="FoodId" Type="Int64" Nullable="false" />
+          <Property Name="BreakFast" Type="Boolean" Nullable="false" />
+          <Property Name="Lunch" Type="Boolean" Nullable="false" />
+          <Property Name="Dinner" Type="Boolean" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Food" Relationship="Self.FK_FoodSchedule_Food" FromRole="FoodSchedule" ToRole="Food" />
+          <Property Name="AvailableDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AvailableCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Reserves" Relationship="FoodHubModel.FK_Reserve_FoodSchedule" FromRole="FoodSchedule" ToRole="Reserve" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mobile" Type="String" MaxLength="14" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telegram" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AuthAsCollege" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Foods" Relationship="Self.FK_Food_User" FromRole="User" ToRole="Food" />
+          <NavigationProperty Name="UserDocuments" Relationship="Self.FK_UserDocument_User" FromRole="User" ToRole="UserDocument" />
+          <Property Name="RoleId" Type="Byte" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Reserves" Relationship="FoodHubModel.FK_Reserve_User" FromRole="User" ToRole="Reserve" />
+        </EntityType>
+        <EntityType Name="UserDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserDocument_User" FromRole="UserDocument" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Food_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Food" Type="Self.Food" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Food">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FoodSchedule_Food">
+          <End Role="Food" Type="Self.Food" Multiplicity="1" />
+          <End Role="FoodSchedule" Type="Self.FoodSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FoodSchedule">
+              <PropertyRef Name="FoodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDocument_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserDocument" Type="Self.UserDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserDocument">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FoodHubEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Foods" EntityType="Self.Food" />
+          <EntitySet Name="FoodSchedules" EntityType="Self.FoodSchedule" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserDocuments" EntityType="Self.UserDocument" />
+          <AssociationSet Name="FK_Food_User" Association="Self.FK_Food_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Food" EntitySet="Foods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FoodSchedule_Food" Association="Self.FK_FoodSchedule_Food">
+            <End Role="Food" EntitySet="Foods" />
+            <End Role="FoodSchedule" EntitySet="FoodSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserDocument_User" Association="Self.FK_UserDocument_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserDocument" EntitySet="UserDocuments" />
+          </AssociationSet>
+          <EntitySet Name="FoodDetails" EntityType="FoodHubModel.FoodDetail" />
+          <EntitySet Name="Languages" EntityType="FoodHubModel.Language" />
+          <AssociationSet Name="FK_FoodDetail_Food" Association="FoodHubModel.FK_FoodDetail_Food">
+            <End Role="Food" EntitySet="Foods" />
+            <End Role="FoodDetail" EntitySet="FoodDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FoodDetail_Language" Association="FoodHubModel.FK_FoodDetail_Language">
+            <End Role="Language" EntitySet="Languages" />
+            <End Role="FoodDetail" EntitySet="FoodDetails" />
+          </AssociationSet>
+          <EntitySet Name="Reserves" EntityType="FoodHubModel.Reserve" />
+          <AssociationSet Name="FK_Reserve_FoodSchedule" Association="FoodHubModel.FK_Reserve_FoodSchedule">
+            <End Role="FoodSchedule" EntitySet="FoodSchedules" />
+            <End Role="Reserve" EntitySet="Reserves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reserve_User" Association="FoodHubModel.FK_Reserve_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Reserve" EntitySet="Reserves" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="FoodDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LanguageId" Type="Byte" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FoodId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Food" Relationship="FoodHubModel.FK_FoodDetail_Food" FromRole="FoodDetail" ToRole="Food" />
+          <NavigationProperty Name="Language" Relationship="FoodHubModel.FK_FoodDetail_Language" FromRole="FoodDetail" ToRole="Language" />
+        </EntityType>
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Abbreviation" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="Flag" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FoodDetails" Relationship="FoodHubModel.FK_FoodDetail_Language" FromRole="Language" ToRole="FoodDetail" />
+        </EntityType>
+        <Association Name="FK_FoodDetail_Food">
+          <End Type="FoodHubModel.Food" Role="Food" Multiplicity="1" />
+          <End Type="FoodHubModel.FoodDetail" Role="FoodDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FoodDetail">
+              <PropertyRef Name="FoodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FoodDetail_Language">
+          <End Type="FoodHubModel.Language" Role="Language" Multiplicity="1" />
+          <End Type="FoodHubModel.FoodDetail" Role="FoodDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Language">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FoodDetail">
+              <PropertyRef Name="LanguageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Reserve">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FoodScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="ReserveDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ReserveCount" Type="Int32" Nullable="false" />
+          <Property Name="BreakFast" Type="Boolean" Nullable="false" />
+          <Property Name="Lunch" Type="Boolean" Nullable="false" />
+          <Property Name="Dinner" Type="Boolean" Nullable="false" />
+          <Property Name="IsSold" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FoodSchedule" Relationship="FoodHubModel.FK_Reserve_FoodSchedule" FromRole="Reserve" ToRole="FoodSchedule" />
+          <Property Name="ReserveUserId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="FoodHubModel.FK_Reserve_User" FromRole="Reserve" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Reserve_FoodSchedule">
+          <End Type="FoodHubModel.FoodSchedule" Role="FoodSchedule" Multiplicity="1" />
+          <End Type="FoodHubModel.Reserve" Role="Reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FoodSchedule">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reserve">
+              <PropertyRef Name="FoodScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reserve_User">
+          <End Type="FoodHubModel.User" Role="User" Multiplicity="1" />
+          <End Type="FoodHubModel.Reserve" Role="Reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reserve">
+              <PropertyRef Name="ReserveUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FoodHubModelStoreContainer" CdmEntityContainer="FoodHubEntities">
+          <EntitySetMapping Name="Foods">
+            <EntityTypeMapping TypeName="FoodHubModel.Food">
+              <MappingFragment StoreEntitySet="Food">
+                <ScalarProperty Name="FoodCategoryId" ColumnName="FoodCategoryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="IsMeal" ColumnName="IsMeal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FoodSchedules">
+            <EntityTypeMapping TypeName="FoodHubModel.FoodSchedule">
+              <MappingFragment StoreEntitySet="FoodSchedule">
+                <ScalarProperty Name="AvailableCount" ColumnName="AvailableCount" />
+                <ScalarProperty Name="AvailableDate" ColumnName="AvailableDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FoodId" ColumnName="FoodId" />
+                <ScalarProperty Name="BreakFast" ColumnName="BreakFast" />
+                <ScalarProperty Name="Lunch" ColumnName="Lunch" />
+                <ScalarProperty Name="Dinner" ColumnName="Dinner" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="FoodHubModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Telegram" ColumnName="Telegram" />
+                <ScalarProperty Name="AuthAsCollege" ColumnName="AuthAsCollege" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDocuments">
+            <EntityTypeMapping TypeName="FoodHubModel.UserDocument">
+              <MappingFragment StoreEntitySet="UserDocument">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FoodDetails">
+            <EntityTypeMapping TypeName="FoodHubModel.FoodDetail">
+              <MappingFragment StoreEntitySet="FoodDetail">
+                <ScalarProperty Name="FoodId" ColumnName="FoodId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Languages">
+            <EntityTypeMapping TypeName="FoodHubModel.Language">
+              <MappingFragment StoreEntitySet="Language">
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reserves">
+            <EntityTypeMapping TypeName="FoodHubModel.Reserve">
+              <MappingFragment StoreEntitySet="Reserve">
+                <ScalarProperty Name="ReserveUserId" ColumnName="ReserveUserId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsSold" ColumnName="IsSold" />
+                <ScalarProperty Name="Dinner" ColumnName="Dinner" />
+                <ScalarProperty Name="Lunch" ColumnName="Lunch" />
+                <ScalarProperty Name="BreakFast" ColumnName="BreakFast" />
+                <ScalarProperty Name="ReserveCount" ColumnName="ReserveCount" />
+                <ScalarProperty Name="ReserveDate" ColumnName="ReserveDate" />
+                <ScalarProperty Name="FoodScheduleId" ColumnName="FoodScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

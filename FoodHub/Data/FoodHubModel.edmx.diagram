@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="89784e90cb824900a2a8b131a70cf11f" Name="Diagram1">
+        <EntityTypeShape EntityType="FoodHubModel.Food" Width="1.5" PointX="5.125" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodHubModel.FoodSchedule" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodHubModel.User" Width="1.5" PointX="2.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodHubModel.UserDocument" Width="1.5" PointX="0.625" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="FoodHubModel.FK_Food_User" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodHubModel.FK_FoodSchedule_Food" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodHubModel.FK_UserDocument_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FoodHubModel.FoodDetail" Width="1.5" PointX="7.125" PointY="5" />
+        <EntityTypeShape EntityType="FoodHubModel.Language" Width="1.5" PointX="9" PointY="5" />
+        <AssociationConnector Association="FoodHubModel.FK_FoodDetail_Food" />
+        <AssociationConnector Association="FoodHubModel.FK_FoodDetail_Language" />
+        <EntityTypeShape EntityType="FoodHubModel.Reserve" Width="1.5" PointX="8.5" PointY="1.25" />
+        <AssociationConnector Association="FoodHubModel.FK_Reserve_FoodSchedule" />
+        <AssociationConnector Association="FoodHubModel.FK_Reserve_User" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
